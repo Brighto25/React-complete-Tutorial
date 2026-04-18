@@ -11,20 +11,33 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      function CounterClick() {
-       const [count, setCount] = React.useState(0);
-
-    
-
-       
+      function CounterClick({ count, onClick }) {
         return (
-          <button 
-          onClick={()=>console.log("Clicked")}>Clicked {count} times</button>
+          <>
+            {count === 1 && (
+              <button onClick={onClick}>Clicked {count} time</button>
+            )}
+
+            {count != 1 && (
+              <button onClick={onClick}>
+                Clicked {count} times
+              </button>
+            )}
+          </>
         );
       }
 
       function App() {
-        return <CounterClick />;
+        const [count, setCount] = React.useState(0);
+        function handleClick() {
+          setCount(count + 1);
+        }
+        return (
+          <>
+            <CounterClick count={count} onClick={handleClick} />
+            <CounterClick count={count} onClick={handleClick} />
+          </>
+        );
       }
 
       const container = document.querySelector(".js-container");
