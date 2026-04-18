@@ -23,8 +23,13 @@
                 Clicked {count} times
               </button>
             )}
+
+              
+
+           
           </>
         );
+
       }
 
       function App() {
@@ -34,8 +39,11 @@
         }
         return (
           <>
+
             <CounterClick count={count} onClick={handleClick} />
             <CounterClick count={count} onClick={handleClick} />
+            <button
+              onClick = {()=>{setCount(0)}}>Reset</button>
           </>
         );
       }
