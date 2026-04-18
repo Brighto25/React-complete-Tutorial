@@ -11,18 +11,23 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      function ChatInput() {
-       const[inputText, setInputText] = React.useState('');
+      function ChatInput({ chatMessages, setChatMessages }) {
+        const [inputText, setInputText] = React.useState("");
 
         function saveInputText(event) {
-            setInputText(event.target.value);
+          setInputText(event.target.value);
         }
 
-        function sendMessage(){
-          console.log(inputText);
-
+        function sendMessage() {
+          setChatMessages([
+            ...chatMessages,
+            {
+              message: inputText,
+              sender: "user",
+              id: crypto.randomUUID(),
+            },
+          ]);
         }
-           
 
         return (
           <>
@@ -31,29 +36,26 @@
               size="30"
               onChange={saveInputText}
             />
-            <button
-            onClick = {sendMessage }
-            >
-            Send</button>
+            <button onClick={sendMessage}>Send</button>
           </>
         );
       }
 
       function ChatMessage({ message, sender }) {
         /* // const message = props.message;
-              // const sender = props.sender;
-                 // const {message , sender} = props;
+                    // const sender = props.sender;
+                       // const {message , sender} = props;
 
 
-             if (sender === "robot") {
-                return (
-                  <div>
-                    <img src="robot.png" width="30" />
-                    {message}
-                  </div>
-                );
-              }
-             */
+                   if (sender === "robot") {
+                      return (
+                        <div>
+                          <img src="robot.png" width="30" />
+                          {message}
+                        </div>
+                      );
+                    }
+                   */
 
         return (
           <div>
@@ -61,6 +63,22 @@
             {message}
             {sender === "user" && <img src="user.png" width="50" />}
           </div>
+        );
+      }
+
+      function ChatMessages({ chatMessages }) {
+        return (
+          <>
+            {chatMessages.map((chatMessage) => {
+              return (
+                <ChatMessage
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </>
         );
       }
 
@@ -91,31 +109,14 @@
         //const chatMessages = array[0];
         // const setChatMessages = array[1];
 
-        function sendMessage() {
-          setChatMessages([
-            ...chatMessages,
-            {
-              message: "Testing the updator function in STATES",
-              sender: "user",
-              id: crypto.randomUUID(),
-            },
-          ]);
-        }
-
         return (
           <>
-            <ChatInput />
-            <button onClick={sendMessage}>Send Message</button>
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
 
-            {chatMessages.map((chatMessage) => {
-              return (
-                <ChatMessage
-                  message={chatMessage.message}
-                  sender={chatMessage.sender}
-                  key={chatMessage.id}
-                />
-              );
-            })}
+            <ChatMessages chatMessages={chatMessages} />
           </>
         );
       }
